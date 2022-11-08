@@ -42,7 +42,8 @@ protected:
 	void OnTouchReleased(const ETouchIndex::Type FingerIndex, const FVector Location);
 	
 	// Input handlers for keyboard and controllers
-	//void On();
+	void OnMoveHorizontal(const float value);
+	void OnMoveVertical(const float value);
 
 private:
 	bool bInputPressed; // Input is bring pressed

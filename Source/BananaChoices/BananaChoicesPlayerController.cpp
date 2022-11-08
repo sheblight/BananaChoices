@@ -55,11 +55,12 @@ void ABananaChoicesPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	// bind mouse events
-	InputComponent->BindAction("SetDestination", IE_Pressed, this, &ABananaChoicesPlayerController::OnSetDestinationPressed);
-	InputComponent->BindAction("SetDestination", IE_Released, this, &ABananaChoicesPlayerController::OnSetDestinationReleased);
+	//InputComponent->BindAction("Attack", IE_Pressed, this, &ABananaChoicesPlayerController::OnSetDestinationPressed);
+	//InputComponent->BindAction("Attack", IE_Released, this, &ABananaChoicesPlayerController::OnSetDestinationReleased);
 	
 	// bind keyboard and controller events
-
+	InputComponent->BindAxis("MoveHorizontal", this, &ABananaChoicesPlayerController::OnMoveHorizontal);
+	InputComponent->BindAxis("MoveVertical", this, &ABananaChoicesPlayerController::OnMoveVertical);
 
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &ABananaChoicesPlayerController::OnTouchPressed);
@@ -92,6 +93,22 @@ void ABananaChoicesPlayerController::OnSetDestinationReleased()
 		// We move there and spawn some particles
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, HitLocation);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, FXCursor, HitLocation, FRotator::ZeroRotator, FVector(1.f, 1.f, 1.f), true, true, ENCPoolMethod::None, true);
+	}
+}
+
+void ABananaChoicesPlayerController::OnMoveHorizontal(const float value) {
+	APawn* const MyPawn = GetPawn();
+	if (MyPawn)
+	{
+		MyPawn->AddMovementInput(FVector(-sin(3*PI / 4.f), -cos(3*PI / 4.f), 0), value, false);
+	}
+}
+
+void ABananaChoicesPlayerController::OnMoveVertical(const float value) {
+	APawn* const MyPawn = GetPawn();
+	if (MyPawn)
+	{
+		MyPawn->AddMovementInput(FVector(sin(PI / 4.f), cos(PI / 4.f), 0), value, false);
 	}
 }
 
